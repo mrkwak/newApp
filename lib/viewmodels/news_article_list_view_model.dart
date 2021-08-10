@@ -12,14 +12,26 @@ enum LoadingStatus {
 
 class NewsArticleListViewModel with ChangeNotifier {
   LoadingStatus loadingStatus = LoadingStatus.searching;
-  late List<NewsArticleViewModel> articles = <NewsArticleViewModel>[];
+  List<NewsArticleViewModel> articles = <NewsArticleViewModel>[];
+
+  int number = 0;
+
+  void increase() {
+    number++;
+    notifyListeners();
+  }
+
+  void decrease() {
+    number--;
+    notifyListeners();
+  }
 
   void topHeadlinesByCountry(String country) async {
     this.loadingStatus = LoadingStatus.searching;
     notifyListeners();
 
     List<NewsArticle> newsArticles =
-        await WebService().fetchHeadlinesByCountry(country);
+        await WebService().fetchTopHeadLinesCountry(country);
 
     this.articles = newsArticles
         .map((article) => NewsArticleViewModel(article: article))
